@@ -28,85 +28,113 @@
         <div class="col-md-2 m-0 p-0 bg-white pt-4">
             <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/admin">Admin</a>
+                    <a class="nav-link active" data-toggle="tab" href="#AdminPanel" sec:authorize="hasRole('ROLE_ADMIN')">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user">User</a>
+                    <a class="nav-link" data-toggle="tab" href="#userInfoPage">User</a>
                 </li>
             </ul>
         </div>
 
+
         <div class="container col-md-10 bg-light pt-4">
-            <h1>Admin panel</h1>
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#allUsers">Users table</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#newUser" id="getRolesForNewUser">New User</a>
-                </li>
-            </ul>
-            <div class="tab-content border rounded">
-                <div class="tab-pane active" id="allUsers">
-                    <h5 class="p-2 pl-3 m-0 rounded">All users</h5>
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">First Name</th>
-                            <th scope="col">Last Name</th>
-                            <th scope="col">Age</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Role</th>
-                            <th scope="col">Edit</th>
-                            <th scope="col">Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody id="mainTableWithUsers"></tbody>
-                    </table>
-                </div>
-                <div class="tab-pane bg-white" id="newUser">
-                    <h5 class="p-2 pl-3 m-0 rounded bg-light">Add new user</h5>
-                    <div class="row pt-3 pb-3">
-                        <div class="col-md-4 mx-auto col text-center">
-                            <div class="myNew">
-                                <form id="newUserForm">
-                                    <div class="form-group text-center font-weight-bold">
-                                        <div class="form-group">
-                                            <label for="name" class="col-form-label">First name</label>
-                                            <input type="text" class="form-control form-control-sm" id="nameNew"
-                                                   name="name" value=""/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="lastname" class="col-form-label">Last name</label>
-                                            <input type="text" class="form-control form-control-sm" id="lastnameNew"
-                                                   name="lastname" value=""/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="age" class="col-form-label">Age</label>
-                                            <input type="text" class="form-control form-control-sm" id="ageNew"
-                                                   name="age" value=""/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email" class="col-form-label">Email</label>
-                                            <input type="text" class="form-control form-control-sm" id="emailNew"
-                                                   name="email" value=""/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="password" class="col-form-label">Password</label>
-                                            <input type="text" class="form-control form-control-sm" id="passwordNew"
-                                                   name="password" value=""/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="roles" class="col-form-label">Role</label>
-                                            <select multiple="multiple" name="roleNames"
-                                                    class="form-control form-control-sm" id="rolesNew" size="2">
-                                            </select>
-                                        </div>
+            <div class="tab-content">
+                <div  class="tab-pane fade show active" id="AdminPanel" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <h1>Admin panel</h1>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#allUsers">Users table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#newUser" id="getRolesForNewUser">New User</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content border rounded">
+                        <div class="tab-pane active" id="allUsers">
+                            <h5 class="p-2 pl-3 m-0 rounded">All users</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody id="mainTableWithUsers"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane bg-white" id="newUser">
+                            <h5 class="p-2 pl-3 m-0 rounded bg-light">Add new user</h5>
+                            <div class="row pt-3 pb-3">
+                                <div class="col-md-4 mx-auto col text-center">
+                                    <div class="myNew">
+                                        <form id="newUserForm">
+                                            <div class="form-group text-center font-weight-bold">
+                                                <div class="form-group">
+                                                    <label for="name" class="col-form-label">First name</label>
+                                                    <input type="text" class="form-control form-control-sm" id="nameNew"
+                                                           name="name" value=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="lastname" class="col-form-label">Last name</label>
+                                                    <input type="text" class="form-control form-control-sm" id="lastnameNew"
+                                                           name="lastname" value=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="age" class="col-form-label">Age</label>
+                                                    <input type="text" class="form-control form-control-sm" id="ageNew"
+                                                           name="age" value=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email" class="col-form-label">Email</label>
+                                                    <input type="text" class="form-control form-control-sm" id="emailNew"
+                                                           name="email" value=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="password" class="col-form-label">Password</label>
+                                                    <input type="text" class="form-control form-control-sm" id="passwordNew"
+                                                           name="password" value=""/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="roles" class="col-form-label">Role</label>
+                                                    <select multiple="multiple" name="roleNames"
+                                                            class="form-control form-control-sm" id="rolesNew" size="2">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-success" id="addNewUserButton">Add new user</button>
+                                        </form>
                                     </div>
-                                    <button type="button" class="btn btn-success" id="addNewUserButton">Add new user</button>
-                                </form>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="userInfoPage">
+                    <h1>User information-page</h1>
+                    <div class="tab-content border rounded">
+                        <div class="tab-pane active" id="aboutUser">
+                            <h5 class="p-2 pl-3 m-0 rounded">About user</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Last Name</th>
+                                    <th scope="col">Age</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Role</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableWithUser"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -114,6 +142,10 @@
         </div>
     </div>
 </div>
+
+
+
+
 
 <div class="modal fade" id="deleteModal" role="dialog" tabindex="-1"
      aria-labelledby="myModalLabel" aria-hidden="true">

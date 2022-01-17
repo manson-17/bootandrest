@@ -2,6 +2,8 @@ $(async function () {
     await getTableWithUsers()
     await addNewUser()
     await getRoles()
+    await  getAuthorityUser();
+
 })
 
 
@@ -13,18 +15,42 @@ const userFetchService = {
     },
     findAllUsers: async () => await fetch('api/users'),
     findOneUser: async (id) => await fetch(`api/users/${id}`),
-    addNewUser: async (user) => await fetch('api/save', {
+    addNewUser: async (user) => await fetch('api/users', {
         method: 'POST',
         headers: userFetchService.head,
         body: JSON.stringify(user)
     }),
-    updateUser: async (user) => await fetch(`api/update`, {
-        method: 'PATCH',
+    updateUser: async (user, id) => await fetch(`api/users/${id}`, {
+        method: 'PUT',
         headers: userFetchService.head,
         body: JSON.stringify(user)
     }),
     deleteUser: async (id) => await fetch(`api/users/${id}`, {method: 'DELETE', headers: userFetchService.head}),
-    findAllRoles: async () => await fetch('api/roles')
+    findAllRoles: async () => await fetch('api/roles'),
+    findAuthorityUser: async () => await fetch('api/users/authority')
+
+}
+
+async function getAuthorityUser() {
+    let table = $('#tableWithUser');
+    table.empty();
+
+    await userFetchService.findAuthorityUser()
+        .then(res => res.json())
+        .then(user =>{
+            let tableFilling = `$(
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.lastname}</td>
+                            <td>${user.age}</td>
+                            <td>${user.email}</td>
+                            <td>${user.roles.map(s => (s.name != 'ROLE_ADMIN' ? 'USER ' : 'ADMIN '))}</td>
+                        </tr>
+                )`;
+            table.append(tableFilling);
+        })
+
 }
 
 async function getTableWithUsers() {
@@ -44,12 +70,12 @@ async function getTableWithUsers() {
                             <td>${user.email}</td>
                             <td>${user.roles.map(s => (s.name != 'ROLE_ADMIN' ? 'USER ' : 'ADMIN '))}</td>
                             <td>
-                                <button type="button" onclick="editUserModal(${user.id})" data-action="edit" class="btn btn-info eBtn"
-                                data-toggle="modal" data-target="#editModal">Edit</button>
+                                <button type="button" onclick="editUserModal(${user.id})" data-action="edit" 
+                                class="btn btn-info" data-toggle="modal" data-target="#editModal">Edit</button>
                             </td>
                             <td>
-                                <button type="button" onclick="deleteUserModal(${user.id})" data-action="delete" class="btn btn-danger"
-                                data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                <button type="button" onclick="deleteUserModal(${user.id})" data-action="delete" 
+                                class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
                             </td>
                         </tr>
                 )`;
@@ -101,7 +127,7 @@ $("#editButton").on('click', async () => {
         roles: roles
     }
     console.log(roles)
-    await userFetchService.updateUser(data)
+    await userFetchService.updateUser(data, id)
         .then(() => {
             $("#editModal .close").click();
             document.getElementById("editForm").reset()
@@ -160,7 +186,7 @@ async function addNewUser() {
         let email = document.getElementById('emailNew').value
         let password = document.getElementById('passwordNew').value
         let roles = getUserRoles(Array.from(document.getElementById('rolesNew').selectedOptions)
-            .map(role => role.id))
+             .map(role => role.id))
         let data = {
             name: name,
             lastname: lastname,
