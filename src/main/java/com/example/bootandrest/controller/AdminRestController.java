@@ -69,7 +69,7 @@ public class AdminRestController {
     }
 
     @GetMapping("users/authority")
-    public ResponseEntity<User> getAuthorityUser(@AuthenticationPrincipal User user){
+    public ResponseEntity<User> getAuthenticationUser(@AuthenticationPrincipal User user){
         User user1 = userService.findUserByEmail(user.getEmail());
         return new  ResponseEntity<>(user1, HttpStatus.OK);
     }

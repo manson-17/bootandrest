@@ -94,10 +94,10 @@ async function editUserModal(id) {
                     $('#lastname').val(user.lastname)
                     $('#age').val(user.age)
                     $('#email').val(user.email)
+                    document.getElementById('roles').innerHTML = ''
                     userFetchService.findAllRoles()
                         .then(res => res.json())
                         .then(roles => {
-                            document.getElementById('roles').innerHTML = ''
                             roles.map(role => {
                                 $('#roles')
                                     .append(`<option id=${role.id} value=${role.name}>${role.name}</option>`)
@@ -166,10 +166,10 @@ $("#deleteButton").on('click', async () => {
 
 async function getRoles() {
     $('#getRolesForNewUser').on('click', async () => {
+        document.getElementById('rolesNew').innerHTML = ''
         userFetchService.findAllRoles()
             .then(res => res.json())
             .then(roles => {
-                document.getElementById('rolesNew').innerHTML = ''
                 roles.map(role => {
                     $('#rolesNew')
                         .append(`<option id="${role.id}" value="${role.name}">${role.name}</option>`)
