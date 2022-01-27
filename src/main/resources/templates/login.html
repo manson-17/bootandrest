@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,9 +10,15 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
 </head>
 <body>
+
 <div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
+    <form class="form-signin"  th:action="@{/login}" th:method="post">
+        <div class="text-center">
+            <h4><a th:href="@{/oauth2/authorization/google}">Login with Google</a></h4>
+        </div>
+        <div class="text-center"><p >OR</p></div>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <h2 class="form-signin-heading text-center">Please sign in</h2>
         <p>
             <label for="username" class="sr-only">Username</label>
             <input type="text" id="username" name="username" class="form-control" placeholder="Email address" required="" autofocus="">
@@ -21,7 +27,11 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
         </p>
+
+<!--        <p><input type="checkbox" name="remember-me"> Remember me on this computer.</p>-->
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
     </form>
 </div>
 </body>

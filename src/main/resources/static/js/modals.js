@@ -21,13 +21,13 @@ const userFetchService = {
         body: JSON.stringify(user)
     }),
     updateUser: async (user, id) => await fetch(`api/users/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: userFetchService.head,
         body: JSON.stringify(user)
     }),
     deleteUser: async (id) => await fetch(`api/users/${id}`, {method: 'DELETE', headers: userFetchService.head}),
-    findAllRoles: async () => await fetch('api/roles'),
-    findAuthorityUser: async () => await fetch('api/users/authority')
+    findAllRoles: async () => await fetch('api/users/roles'),
+    findAuthorityUser: async () => await fetch(`api/users/authority`)
 
 }
 

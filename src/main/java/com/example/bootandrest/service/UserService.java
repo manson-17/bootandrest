@@ -6,16 +6,20 @@ import java.util.List;
 
 public interface UserService {
 
-    public List<User> getAllUsers();
+     List<User> getAllUsers();
 
-    public void save(User user);
+     void save(User user);
 
-    public void update(User user);
+     void update(User user);
 
-    public void delete(Long id);
+     void delete(Long id);
 
-    public User findUserByID(Long id);
+     User findUserByID(Long id);
 
-    public User findUserByEmail(String email);
+     User findUserByEmail(String email);
+
+     User findUserByName(String name);
+
+     void processOAuthPostLogin(CustomOAuth2User username);
 
 }

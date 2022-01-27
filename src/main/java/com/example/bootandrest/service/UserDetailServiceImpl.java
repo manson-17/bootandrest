@@ -1,6 +1,7 @@
 package com.example.bootandrest.service;
 
 
+import com.example.bootandrest.entity.Role;
 import com.example.bootandrest.entity.User;
 import com.example.bootandrest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
 
-@Service
+
+
 public class UserDetailServiceImpl implements UserDetailsService {
 
 
@@ -28,10 +32,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
         User user = userRepository.findUserByEmail(s);
         user.getAuthorities().size();
         if (user == null) {
-            throw new UsernameNotFoundException(String.format("User with name '%s', not found", s));
+            throw new UsernameNotFoundException(String.format("User with email '%s', not found", s));
         }
         return user;
     }
+
 
 //    @Override
 //    @Transactional
@@ -46,5 +51,4 @@ public class UserDetailServiceImpl implements UserDetailsService {
 //    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
 //        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getAuthority())).collect(Collectors.toSet());
 //    }
-
 }

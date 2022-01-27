@@ -7,8 +7,11 @@ import com.example.bootandrest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -44,35 +47,41 @@ public class AdminRestController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/users")
     public ResponseEntity<User> save(@RequestBody User user) {
         userService.save(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PutMapping("/users/{id}")
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PatchMapping("/users/{id}")
     public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody User user) {
         userService.update(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<User> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
-    @GetMapping("/roles")
+    @GetMapping("/users/roles")
     public ResponseEntity<List<Role>> getAllRoles(){
         List<Role> roles = roleService.findAllRoles();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     @GetMapping("users/authority")
-    public ResponseEntity<User> getAuthenticationUser(@AuthenticationPrincipal User user){
-        User user1 = userService.findUserByEmail(user.getEmail());
-        return new  ResponseEntity<>(user1, HttpStatus.OK);
+    public ResponseEntity<User> getAuthenticationUser(Principal principal){
+       User user = userService.findUserByEmail(principal.getName());
+        if (user == null){
+            String[] name = principal.getName().split(" ");
+            user = userService.findUserByName(name[0]);
+        }
+        return new  ResponseEntity<>(user, HttpStatus.OK);
     }
-
 
 }
