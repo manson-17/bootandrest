@@ -1,27 +1,33 @@
 package com.example.bootandrest.controller;
 
+import com.example.bootandrest.dto.MapperUtil;
+import com.example.bootandrest.dto.RoleDTO;
+import com.example.bootandrest.dto.UserDTO;
 import com.example.bootandrest.entity.Role;
 import com.example.bootandrest.entity.User;
 import com.example.bootandrest.service.RoleService;
 import com.example.bootandrest.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api")
 public class AdminRestController {
 
-    private UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
 
+    private UserService userService;
 
     private RoleService roleService;
 
@@ -35,9 +41,9 @@ public class AdminRestController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return new  ResponseEntity<>(users, HttpStatus.OK);
+        return new  ResponseEntity<>(MapperUtil.convertList(users, this::convertToUserDto), HttpStatus.OK);
     }
 
 
@@ -81,7 +87,20 @@ public class AdminRestController {
             String[] name = principal.getName().split(" ");
             user = userService.findUserByName(name[0]);
         }
+        userService.countAuth(user.getId());
         return new  ResponseEntity<>(user, HttpStatus.OK);
     }
+
+    private UserDTO convertToUserDto(User user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        Set<Role> roleList =  user.getRoles();
+        userDTO.setRolesDTO(MapperUtil.convertSet(roleList, this::convertToRoleDTO));
+        return userDTO;
+    }
+
+    private RoleDTO convertToRoleDTO(Role role) {
+        return modelMapper.map(role, RoleDTO.class);
+    }
+
 
 }

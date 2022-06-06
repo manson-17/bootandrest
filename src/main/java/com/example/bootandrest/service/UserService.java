@@ -22,4 +22,6 @@ public interface UserService {
 
      void processOAuthPostLogin(CustomOAuth2User username);
 
+      void countAuth(Long id);
+
 }

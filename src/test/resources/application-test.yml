@@ -1,0 +1,16 @@
+# Postgresql properties
+spring:
+ datasource:
+#  url: jdbc:postgresql://localhost:5432/test?currentSchema=test
+  username: test
+  password: test
+#  driver-class-name: org.postgresql.Driver
+# jpa:
+#  database: postgresql
+#  database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+#  show_sql: true
+#  hibernate:
+#   ddl-auto: update
+#   format_sql: true
+
+

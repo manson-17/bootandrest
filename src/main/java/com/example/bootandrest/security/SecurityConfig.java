@@ -30,8 +30,6 @@ import java.io.IOException;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-
-
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailServiceImpl();
@@ -64,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                                        Authentication authentication) throws IOException, ServletException {
+                                                        Authentication authentication) throws IOException {
                         System.out.println("AuthenticationSuccessHandler invoked");
                         System.out.println("Authentication name: " + authentication.getName());
                         CustomOAuth2User oauthUser = (CustomOAuth2User) authentication.getPrincipal();
@@ -92,8 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomOAuth2UserService oAuth2UserService;
 
-    @Autowired
-    private UserService userService;
+
+        private UserService userService;
 
     }
 
